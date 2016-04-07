@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}article_detail{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div name="article" class="col-md-10 col-md-offset-1">
+			<h1 class="text-center">{{ article.title }}</h1>
+			<p class="blog-post-meta text-center">作者:{{ article.author }}&emsp;发布日期:{{ article.pub_date|date:"Y-m-d" }}&emsp;阅读次数:{{ article.views }}</p>
+			<p class="lead" >&emsp;&emsp;{{ article.content |safe }}</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ category.name }}-insCms {% endblock %}
+
+{% block header %}
+<header class="jumbotron subhead" id="header-base">
+    <div class="container">
+        	<h1>{{ category.name }}-<i><a href="/">home</a></i></h1>
+        	<p>{{ category.desc }}</p>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+<div class="container">
+      <div class="row">
+      	{% for article in articles %}
+        	<div class="col-md-4">
+          	<h2><a href="{% url 'article_detail' %}?id={{ article.id }}">{{ article.title }}</a></h2>
+          	<p class="blog-post-meta text-center">作者:{{ article.author }}&emsp;发布日期:{{ article.pub_date|date:"Y-m-d" }}&emsp;阅读次数:{{ article.views }}</p>
+          	<p class="lead">&emsp;&emsp;{{ article.content |truncatechars_html:512 |safe}}</p>
+          	<p><a class="btn btn-default" href="{% url 'article_detail' %}?id={{ article.id }}" role="button">阅读全文 &raquo;</a></p>
+        	</div>
+        	{% endfor %}
+       </div>
+       <div class="row">
+       	<div class="col-md-8 col-md-offset-2">
+        		<nav>
+                        <ul class="pager">
+                            {% if articles.has_previous %}
+                                <li class="previous"><a
+                                        href="?page={{ articles.previous_page_number }}">上一页</a>
+                                </li>
+                            {% else %}
+                                <li class="previous disabled"><a href="#">上一页</a></li>
+                            {% endif %}
+                            第 {{ articles.number }} / {{ articles.paginator.num_pages }}页
+                            {% if articles.has_next %}
+                                <li class="next"><a
+                                        href="?page={{ articles.next_page_number }}">下一页</a>
+                                </li>
+                            {% else %}
+                                <li class="next disabled"><a href="#">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+           </div>
+      </div><!--  /.row -->
+    </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}insCms{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 blog-main">
+                {% for article in articles %}
+                <div class="blog-post">
+                    <h2 class="blog-post-title text-center">
+                        <a href="{% url 'article_detail' %}?id={{ article.id }}">{{ article.title }}</a></h2>
+                    <p class="blog-post-meta text-center">作者: {{ article.author }}&emsp;发布日期: {{ article.pub_date|date:"Y-m-d" }}&emsp;阅读次数: {{ article.views }}</p>
+                    <p class="lead">&emsp;&emsp;{{ article.content |truncatechars_html:512 |safe}}</p>
+                    <p><a class="btn btn-default btn-md" role="button" href="{% url 'article_detail' %}?id={{ article.id }}">阅读全文 &raquo;</a></p>
+                </div>
+                {% endfor %}
+                <nav>
+                        <ul class="pager">
+                            {% if articles.has_previous %}
+                                <li class="previous"><a
+                                        href="?page={{ articles.previous_page_number }}">上一页</a>
+                                </li>
+                            {% else %}
+                                <li class="previous disabled"><a href="#">上一页</a></li>
+                            {% endif %}
+                            第 {{ articles.number }} / {{ articles.paginator.num_pages }}页
+                            {% if articles.has_next %}
+                                <li class="next"><a
+                                        href="?page={{ articles.next_page_number }}">下一页</a>
+                                </li>
+                            {% else %}
+                                <li class="next disabled"><a href="#">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+            </div><!-- /.blog-main -->
+
+        <div class="col-sm-4 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>&emsp;&emsp;你好，欢迎光临insCms（内容管理系统）。在这里你可以发布新文章或修改、删除已有的文章。本系统后台使用了Django强大的后台处理。前端使用Bootstrap响应式设计。功能不多，正在继续完善中...</p>
+          </div>
+          <div>
+              <h4>Category</h4>
+              <ol class="list-unstyled col-sm-11 col-sm-offset-1">
+                {% for category in categorys %}
+                <li><a href="{% url 'category_detail' %}/?id={{ category.id }}">{{ category.name }}&nbsp;({{ category.article_set.all.count }})</a></li>
+                {% endfor %}
+              </ol>
+          </div>
+          <div class="sidebar-module">
+            <h4>Archives</h4>
+            <ol class="list-unstyled col-sm-11 col-sm-offset-1">
+              <li><a href="#">March 2014</a></li>
+              <li><a href="#">February 2014</a></li>
+              <li><a href="#">January 2014</a></li>
+              <li><a href="#">December 2013</a></li>
+              <li><a href="#">November 2013</a></li>
+              <li><a href="#">October 2013</a></li>
+            </ol>
+          </div>
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled col-sm-11 col-sm-offset-1">
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+{% endblock %}
